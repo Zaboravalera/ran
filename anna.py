@@ -1,32 +1,17 @@
-from flask import Flask, request, render_template_string, redirect
+import streamlit as st
+import urllib.parse
 
-app = Flask(__name__)
+st.title("Генератор ссылки на продукт в поиске")
 
-HTML = """
-<!doctype html>
-<title>Поиск продукта</title>
-<h2>Введите название продукта:</h2>
-<form action="/search" method="post">
-  <input type="text" name="query" placeholder="Например, iPhone 15">
-  <input type="submit" value="Сгенерировать ссылку">
-</form>
-{% if link %}
-  <p>Вот ваша ссылка: <a href="{{ link }}" target="_blank">{{ link }}</a></p>
-{% endif %}
-"""
+query = st.text_input("Введите название продукта", placeholder="Например, iPhone 15")
 
-@app.route("/", methods=["GET"])
-def index():
-    return render_template_string(HTML)
+if st.button("Сгенерировать ссылку"):
+    if query.strip():
+        encoded_query = urllib.parse.quote_plus(query)
+        search_url = f"https://www.google.com/search?q={encoded_query}"
+        st.success("Вот ваша ссылка:")
+        st.markdown(f"[{search_url}]({search_url})")
+    else:
+        st.warning("Пожалуйста, введите название продукта.")
 
-@app.route("/search", methods=["POST"])
-def search():
-    query = request.form["query"]
-    if not query.strip():
-        return redirect("/")
-    search_link = "https://www.google.com/search?q=" + "+".join(query.strip().split())
-    return render_template_string(HTML, link=search_link)
-
-if __name__ == "__main__":
-    app.run(debug=True)
 
