@@ -1,41 +1,32 @@
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+from flask import Flask, request, render_template_string, redirect
 
-export default function ProductSearchLinkGenerator() {
-const [product, setProduct] = useState("");
-const [link, setLink] = useState("");
+app = Flask(__name__)
 
-const generateLink = () => {
-const query = encodeURIComponent(product);
-const searchLink = https://www.google.com/search?q=${query};
-setLink(searchLink);
-};
+HTML = """
+<!doctype html>
+<title>Поиск продукта</title>
+<h2>Введите название продукта:</h2>
+<form action="/search" method="post">
+  <input type="text" name="query" placeholder="Например, iPhone 15">
+  <input type="submit" value="Сгенерировать ссылку">
+</form>
+{% if link %}
+  <p>Вот ваша ссылка: <a href="{{ link }}" target="_blank">{{ link }}</a></p>
+{% endif %}
+"""
 
-return (
+@app.route("/", methods=["GET"])
+def index():
+    return render_template_string(HTML)
 
+@app.route("/search", methods=["POST"])
+def search():
+    query = request.form["query"]
+    if not query.strip():
+        return redirect("/")
+    search_link = "https://www.google.com/search?q=" + "+".join(query.strip().split())
+    return render_template_string(HTML, link=search_link)
 
+if __name__ == "__main__":
+    app.run(debug=True)
 
-
-Генератор ссылки на продукт
-
-<Input
-type="text"
-placeholder="Введите название продукта"
-value={product}
-onChange={(e) => setProduct(e.target.value)}
-/>
-Сгенерировать ссылку
-{link && (
-
-
-Перейти к результатам поиска
-
-
-)}
-
-
-
-);
-}
