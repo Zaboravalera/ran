@@ -12,7 +12,7 @@ def load_local_music(file_path):
         b64 = base64.b64encode(data).decode()
         audio_tag = f"""
         <audio autoplay loop>
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
             Ваш браузер не підтримує аудіо.
         </audio>
         """
