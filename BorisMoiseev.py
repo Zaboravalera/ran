@@ -1,34 +1,30 @@
 import streamlit as st
+import base64
 
-# Настройка страницы
+# Настройки страницы
 st.set_page_config(page_title="Інтернет-магазин", layout="wide")
 
-# Товары по категориям
-PRODUCTS = {
-    "Електроніка": [
-        {"id": 1, "name": "Смартфон", "price": 30000, "description": "Сучасний смартфон"},
-        {"id": 2, "name": "Ноутбук", "price": 60000, "description": "Потужний ноутбук"},
-        {"id": 3, "name": "Навушники", "price": 5000, "description": "Бездротові навушники"},
-    ],
-    "Одяг": [
-        {"id": 4, "name": "Футболка", "price": 700, "description": "Бавовняна футболка"},
-        {"id": 5, "name": "Джинси", "price": 1800, "description": "Стильні джинси"},
-    ],
-    "Книги": [
-        {"id": 6, "name": "1984", "price": 250, "description": "Антиутопічний роман Дж. Орвелла"},
-        {"id": 7, "name": "Гаррі Поттер", "price": 400, "description": "Книга про юного чарівника"},
-    ]
-}
+# Загрузка локальной музыки
+def load_local_music(file_path):
+    try:
+        with open(file_path, "rb") as f:
+            data = f.read()
+        b64 = base64.b64encode(data).decode()
+        audio_tag = f"""
+        <audio autoplay loop>
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            Ваш браузер не підтримує аудіо.
+        </audio>
+        """
+        return audio_tag
+    except FileNotFoundError:
+        return "<p style='color:red;'>⚠️ Файл music.mp3 не знайдено.</p>"
 
-# Стили: фон + анимация
-st.markdown(
-    """
+# CSS стили (фон + анимация)
+st.markdown("""
     <style>
-    body {
-        background: #f0f2f6;
-    }
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1545235617-9465d2a55699?auto=format&fit=crop&w=1600&q=80");
+        background-image: url("https://images.unsplash.com/photo-1594737625785-c90226dc65ee?auto=format&fit=crop&w=1600&q=80");
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
@@ -40,7 +36,7 @@ st.markdown(
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         margin-bottom: 1.5rem;
-        animation: fadeInUp 1s ease;
+        animation: fadeInUp 0.8s ease;
     }
     button {
         animation: pulse 2s infinite;
@@ -61,27 +57,43 @@ st.markdown(
         100% { box-shadow: 0 0 0 0 rgba(0,123,255, 0); }
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-# Музыка (онлайн)
-st.markdown(
-    """
-    <audio controls autoplay loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    """,
-    unsafe_allow_html=True
-)
+# Вставка музыки
+st.markdown(load_local_music("music.mp3"), unsafe_allow_html=True)
 
-# Состояние корзины
+# Товары
+PRODUCTS = {
+    "Електроніка": [
+        {"id": 1, "name": "Смартфон", "price": 30000, "description": "Сучасний смартфон"},
+        {"id": 2, "name": "Ноутбук", "price": 60000, "description": "Потужний ноутбук"},
+        {"id": 3, "name": "Навушники", "price": 5000, "description": "Бездротові навушники"},
+        {"id": 8, "name": "Планшет", "price": 25000, "description": "Мобільний пристрій для перегляду контенту"},
+        {"id": 9, "name": "Смарт-годинник", "price": 12000, "description": "Годинник з функціями фітнесу"},
+        {"id": 10, "name": "Портативна колонка", "price": 3000, "description": "Зручна колонка для музики"},
+    ],
+    "Одяг": [
+        {"id": 4, "name": "Футболка", "price": 700, "description": "Бавовняна футболка"},
+        {"id": 5, "name": "Джинси", "price": 1800, "description": "Стильні джинси"},
+        {"id": 11, "name": "Куртка", "price": 3500, "description": "Тепла зимова куртка"},
+        {"id": 12, "name": "Кросівки", "price": 2200, "description": "Зручне спортивне взуття"},
+        {"id": 13, "name": "Светр", "price": 1100, "description": "Вовняний светр для зими"},
+    ],
+    "Книги": [
+        {"id": 6, "name": "1984", "price": 250, "description": "Антиутопічний роман Дж. Орвелла"},
+        {"id": 7, "name": "Гаррі Поттер", "price": 400, "description": "Книга про юного чарівника"},
+        {"id": 14, "name": "Майстер і Маргарита", "price": 300, "description": "Роман Михайла Булгакова"},
+        {"id": 15, "name": "To Kill a Mockingbird", "price": 280, "description": "Класика американської літератури"},
+        {"id": 16, "name": "Пригоди Шерлока Холмса", "price": 320, "description": "Збірка детективних історій"},
+    ]
+}
+
+# Инициализация корзины
 if "cart" not in st.session_state:
     st.session_state.cart = []
 
 # Заголовок
-st.title("🛒 Онлайн-магазин")
+st.title("🛍️ Онлайн-магазин")
 
 # Меню
 page = st.sidebar.radio("Меню", ["Каталог", "Кошик"])
@@ -114,7 +126,7 @@ elif page == "Кошик":
             total += item["price"]
         st.markdown(f"### **Загальна сума: {total}₴**")
 
-        # Ссылка на оплату
+        # Кнопка оплаты
         st.markdown(
             """
             <a href="https://www.liqpay.ua/" target="_blank">
