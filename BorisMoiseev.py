@@ -5,20 +5,16 @@ import base64
 st.set_page_config(page_title="Інтернет-магазин", layout="wide")
 
 # Загрузка локальной музыки
-def load_local_music(file_path):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-        b64 = base64.b64encode(data).decode()
-        audio_tag = f"""
-        <audio autoplay loop>
-          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-            Ваш браузер не підтримує аудіо.
-        </audio>
-        """
-        return audio_tag
-    except FileNotFoundError:
-        return "<p style='color:red;'>⚠️ Файл music.mp3 не знайдено.</p>"
+st.markdown(
+    """
+    <audio controls autoplay loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Ваш браузер не підтримує аудіо елемент.
+    </audio>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # CSS стили (фон + анимация)
 st.markdown("""
