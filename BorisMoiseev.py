@@ -20,26 +20,52 @@ PRODUCTS = {
     ]
 }
 
-# Стили и фон
+# Стили: фон + анимация
 st.markdown(
     """
     <style>
     body {
-        background-color: #f0f2f6;
+        background: #f0f2f6;
     }
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1515169067865-5387ec356754?auto=format&fit=crop&w=1600&q=80");
+        background-image: url("https://images.unsplash.com/photo-1545235617-9465d2a55699?auto=format&fit=crop&w=1600&q=80");
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
+        padding: 2rem;
+    }
+    .card {
+        background-color: rgba(255, 255, 255, 0.85);
         padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 1s ease;
+    }
+    button {
+        animation: pulse 2s infinite;
+    }
+    @keyframes fadeInUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(0,123,255, 0.5); }
+        70% { box-shadow: 0 0 0 10px rgba(0,123,255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0,123,255, 0); }
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Музыка
+# Музыка (онлайн)
 st.markdown(
     """
     <audio controls autoplay loop>
@@ -67,8 +93,13 @@ if page == "Каталог":
 
     for product in PRODUCTS[selected_category]:
         with st.container():
-            st.markdown(f"### {product['name']} — {product['price']}₴")
-            st.write(product["description"])
+            st.markdown(f"""
+                <div class="card">
+                    <h3>{product['name']} — {product['price']}₴</h3>
+                    <p>{product['description']}</p>
+                </div>
+            """, unsafe_allow_html=True)
+
             if st.button(f"Додати до кошика", key=f"add_{product['id']}"):
                 st.session_state.cart.append(product)
                 st.success(f"{product['name']} додано до кошика!")
@@ -79,16 +110,16 @@ elif page == "Кошик":
     if st.session_state.cart:
         total = 0
         for item in st.session_state.cart:
-            st.write(f"• {item['name']} — {item['price']}₴")
+            st.markdown(f"• **{item['name']}** — {item['price']}₴")
             total += item["price"]
         st.markdown(f"### **Загальна сума: {total}₴**")
 
-        # Кнопка оплаты
+        # Ссылка на оплату
         st.markdown(
-            f"""
+            """
             <a href="https://www.liqpay.ua/" target="_blank">
-                <button style="padding: 0.5rem 1rem; font-size: 1rem; background-color: green; color: white; border: none; border-radius: 8px; cursor: pointer;">
-                    Перейти до оплати
+                <button style="padding: 0.6rem 1.2rem; font-size: 1rem; background-color: green; color: white; border: none; border-radius: 8px;">
+                    💳 Перейти до оплати
                 </button>
             </a>
             """,
