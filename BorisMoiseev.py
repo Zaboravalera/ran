@@ -65,7 +65,7 @@ st.markdown(load_local_music("music.mp3"), unsafe_allow_html=True)
 # Товары
 PRODUCTS = {
     "Електроніка": [
-        {"id": 1, "name": "Смартфон", "price": 30000, "description": "Сучасний смартфон"},
+        {"id": 1, "name": "Смартфон", "price": 30000, "description": "Nokia 7650 - флагман 2002 року"},
         {"id": 2, "name": "Ноутбук", "price": 60000, "description": "Потужний ноутбук"},
         {"id": 3, "name": "Навушники", "price": 5000, "description": "Бездротові навушники"},
         {"id": 8, "name": "Планшет", "price": 25000, "description": "Мобільний пристрій для перегляду контенту"},
@@ -74,10 +74,10 @@ PRODUCTS = {
     ],
     "Одяг": [
         {"id": 4, "name": "Футболка", "price": 700, "description": "Бавовняна футболка"},
-        {"id": 5, "name": "Джинси", "price": 1800, "description": "Стильні джинси"},
+        {"id": 5, "name": "Джинси", "price": 1800, "description": "Джинси з базару"},
         {"id": 11, "name": "Куртка", "price": 3500, "description": "Тепла зимова куртка"},
         {"id": 12, "name": "Кросівки", "price": 2200, "description": "Зручне спортивне взуття"},
-        {"id": 13, "name": "Светр", "price": 1100, "description": "Вовняний светр для зими"},
+        {"id": 13, "name": "Светр", "price": 1100, "description": "Вовняний"},
     ],
     "Книги": [
         {"id": 6, "name": "1984", "price": 250, "description": "Антиутопічний роман Дж. Орвелла"},
